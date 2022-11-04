@@ -8,11 +8,13 @@ router.get('/', async (req, res) => {
     let tagData = await Tag.findAll({
       include: [{ model: Product }]
     });
-    if(tagData) {
-      res.status(200).json(tagData);
-    } else {
+
+    if(!tagData) {
       res.status(404).json({ message: "That data was not found" });
+      return;
     }
+
+    res.status(200).json(tagData);
   } catch(exception) {
     res.status(500).json(exception);
   }
