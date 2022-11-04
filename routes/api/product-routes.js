@@ -6,14 +6,17 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', async (req, res) => {
   try {
+    // Query the database for all products
     let productData = await Product.findAll({
       include: [{ model: Category }, { model: Tag }]
     });
 
+    // Return 404 if no data is found
     if(!productData) {
       res.status(404).json({ message: "That data was not found" });
     }
 
+    // Return the queried data
     res.status(200).json(productData);
   } catch(exception) {
     res.status(500).json(exception);
@@ -22,15 +25,18 @@ router.get('/', async (req, res) => {
 
 // get one product
 router.get('/:id', async (req, res) => {
-  try {
+  try {\
+    // Query the database for a product based on the given id
     let productData = await Product.findByPk(req.params.id, {
       include: [{ model: Tag }, { model: Category }]
     });
 
+    // Return 404 if no data is found
     if(!productData) {
       res.status(404).json({ message: "That data was not found" });
     }
 
+    // Return the queried data
     res.status(200).json(productData);
   } catch(exception) {
     res.status(500).json(exception);
@@ -113,17 +119,20 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   try {
+    // Send a delete request restrained to a given id
     let productData = Product.destroy({
       where: {
         id: req.params.id
       }
     });
 
+    // Return 404 if no data is found
     if(!productData) {
       res.status(404).json({ message: "That PRoduct was not found" });
       return;
     }
 
+    // Return the accepted reponse
     res.status(200).json(productData);
   } catch(exception) {
     res.status(500).json(exception);
