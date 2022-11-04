@@ -117,10 +117,10 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     // Send a delete request restrained to a given id
-    let productData = Product.destroy({
+    let productData = await Product.destroy({
       where: {
         id: req.params.id
       }
